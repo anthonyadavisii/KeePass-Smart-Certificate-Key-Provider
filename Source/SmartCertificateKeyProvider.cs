@@ -1,4 +1,4 @@
-﻿namespace SmartCertificateKeyProviderPlugin
+namespace SmartCertificateKeyProviderPlugin
 {
     using System;
     using System.Linq;
@@ -109,13 +109,15 @@
             {
                 try
                 {
-                    if (certificate.PrivateKey is RSA rsa)
-                    {
-                        CertificateCache.StoreCachedValue(keyProviderQueryContext.DatabasePath, certificate.Thumbprint);
+					using (RSA rsa = certificate.GetRSAPrivateKey())
+					{
+						if (rsa != null)
+						{
+							CertificateCache.StoreCachedValue(keyProviderQueryContext.DatabasePath, certificate.Thumbprint);
 
-                        // Using HashAlgorithmName.SHA1 for backward compatibility
-                        return rsa.SignData(DataToSign, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1); // DO NOT CHANGE THIS!!!!;
-                    }
+							return rsa.SignData(DataToSign, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
+						}
+					}
                 }
                 catch (Exception ex)
                 {
