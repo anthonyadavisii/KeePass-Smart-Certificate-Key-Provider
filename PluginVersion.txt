@@ -1,3 +1,4 @@
 ﻿:
-SmartCertificateKeyProviderPlugin:2.0.1
+SmartCertificateKeyProviderPlugin:2.0.2
 :
+
